@@ -11,7 +11,7 @@ import (
 )
 
 var(
-	db *gorm.DB
+	Database *gorm.DB
 )
 
 func Connect() {
@@ -23,8 +23,10 @@ func Connect() {
 
 	host := os.Getenv("DB_HOST")
 	username := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
+	password := os.Getenv("DB_PASS")
 	dbName := os.Getenv("DB_NAME")
+
+	fmt.Println(host, username, password, dbName, dbName)
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, dbName)
 
@@ -36,12 +38,12 @@ func Connect() {
 		log.Fatalf("Error connecting to database: %v", err)
 	}
 
-	db = d
+	Database = d
 
 	log.Println("Connected to database")
 
 }
 
 func GetDB() *gorm.DB {
-	return db
+	return Database
 }

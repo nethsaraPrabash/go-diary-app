@@ -1,8 +1,12 @@
 package main
 
 import (
-	"github.com/nethsaraPrabash/go-diary-app/database"
-	"github.com/nethsaraPrabash/go-diary-app/model"
+
+	"go-diary-app/controller"
+	"go-diary-app/database"
+	"go-diary-app/model"
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
 )
@@ -10,6 +14,7 @@ import (
 func main() {
 	loadEnv()
 	loadDatabase()
+	saveApplication()
 }
 
 func loadDatabase() {
@@ -23,5 +28,16 @@ func loadEnv() {
 	if err != nil {
 		log.Fatalf("Error getting env, %v", err)
 	}
+}
+
+func saveApplication() {
+	router := gin.Default()
+
+	publicRoutes := router.Group("/auth")
+	publicRoutes.POST("/register", controller.Register)
+	publicRoutes.POST("/login", controller.Login)
+
+	router.Run(":5050")
+	fmt.Println("Application running on port 5050")
 }
 
